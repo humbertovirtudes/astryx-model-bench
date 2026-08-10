@@ -2,6 +2,28 @@
 
 Compare local models on their ability to build React pages using Meta's Astryx design system.
 
+## Results Summary
+
+| Model | Task 1: Login | Task 2: Dashboard | Task 3: Settings | Task 4: Chat | Avg |
+|-------|:---:|:---:|:---:|:---:|:---:|
+| **Gemma-4-e4b** (4B) | 18/40 | 14/40 | ❌ Context overflow | 21/40 | **17.7/40** |
+| **Qwen-3.6-27b** (27B) | 35/40 | ❌ Timeout | ❌ Timeout | ❌ Timeout | **35/40** |
+
+## Key Finding
+
+Qwen is **2x better** on code quality but **20x slower** on LMStudio. Gemma is fast but hallucinates MUI components and ignores "no inline styles" instructions.
+
+## Live Sites
+
+All 4 sites built and running on Vite dev servers:
+
+| Site | Port | Model | Task |
+|------|------|-------|------|
+| [Gemma Login](http://localhost:5001) | 5001 | Gemma-4-e4b | Task 1 |
+| [Qwen Login](http://localhost:5002) | 5002 | Qwen-3.6-27b | Task 1 |
+| [Gemma Dashboard](http://localhost:5003) | 5003 | Gemma-4-e4b | Task 2 |
+| [Gemma Chat](http://localhost:5004) | 5004 | Gemma-4-e4b | Task 4 |
+
 ## Models
 
 | Model | Type | Why |
@@ -33,19 +55,30 @@ Configuration UI — tests Toggle, Switch, Select, TabList, SideNav, Dialog.
 ### Task 4: Chat Interface
 Conversational UI — tests Chat, Message, Avatar, Button, TextArea, Layout.
 
-## Methodology
+## Structure
 
-1. Send each task prompt to each model via LMStudio API (127.0.0.1:1234)
-2. Capture the full response (code + any reasoning)
-3. Write output to `pages/<model>/<task>/`
-4. Attempt `npm install && npm run build` on each result
-5. Run Lighthouse/a11y audit on built pages
-6. Write evaluation report to `results/<model>/<task>.md`
+```
+astryx-model-bench/
+├── prompts/           # Benchmark prompts for each task
+├── results/           # Raw model outputs + comparison report
+│   ├── gemma/
+│   ├── qwen/
+│   └── comparison.md
+├── sites/             # Built Vite+React+Astryx projects
+│   ├── gemma-login/
+│   ├── qwen-login/
+│   ├── gemma-dashboard/
+│   └── gemma-chat/
+├── scripts/           # Runner scripts
+├── eval-criteria.md   # Scoring rubric
+└── README.md
+```
 
-## Setup
+## Run Locally
 
 ```bash
-cd ~/.hermes/astryx-model-bench
-npx create-vite@latest base --template react-ts
-cd base && npm install @astryxdesign/core @astryxdesign/theme-neutral @astryxdesign/cli
+cd sites/gemma-login && npm run dev -- --port 5001
+cd sites/qwen-login && npm run dev -- --port 5002
+cd sites/gemma-dashboard && npm run dev -- --port 5003
+cd sites/gemma-chat && npm run dev -- --port 5004
 ```
