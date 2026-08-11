@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Local LLMs build with Astryx - Two-Run Benchmark</title>
 <style>
-  :root{--bg:#0d0f14;--panel:#161922;--panel2:#1d212d;--bd:#2a2f3d;--tx:#e8ebf0;--mut:#98a2b3;--acc:#8ab4ff;--grn:#7ee787;--amb:#f0c674;--pink:#ff9ecb;--red:#ff8a8a}
+  :root{--bg:#0d0f14;--panel:#161922;--panel2:#1d212d;--bd:#2a2f3d;--tx:#e8ebf0;--mut:#98a2b3;--acc:#8ab4ff;--grn:#7ee787;--amb:#f0c674;--pink:#ff9ecb;--red:#ff8a8a;--viol:#b794f6}
   *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55}
   .wrap{max-width:1040px;margin:0 auto;padding:56px 24px 96px}
   .kicker{color:var(--acc);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
@@ -10,18 +10,16 @@
   .lede{color:var(--mut);font-size:17px;max-width:760px;margin:0 0 8px}
   .sub{color:var(--mut);font-size:14px;margin:0 0 40px} .sub code{background:var(--panel2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:12.5px}
   .section-head{display:flex;align-items:baseline;gap:12px;margin:46px 0 6px;padding-top:10px;border-top:1px solid var(--bd)}
-  .section-head h2{font-size:22px;margin:0;letter-spacing:-.01em}
-  .section-head .tag{font-size:12px;color:var(--mut);font-family:ui-monospace,Menlo,monospace}
+  .section-head h2{font-size:22px;margin:0;letter-spacing:-.01em} .section-head .tag{font-size:12px;color:var(--mut);font-family:ui-monospace,Menlo,monospace}
   .section-sub{color:var(--mut);font-size:14.5px;margin:0 0 16px;max-width:780px}
   details.prompt{background:var(--panel);border:1px solid var(--bd);border-radius:10px;margin:0 0 22px}
   details.prompt summary{cursor:pointer;padding:12px 16px;font-size:13px;font-weight:600;color:var(--acc);user-select:none;list-style:none}
   details.prompt summary::-webkit-details-marker{display:none}
-  details.prompt summary:before{content:"\25b8 ";color:var(--mut)}
-  details.prompt[open] summary:before{content:"\25be "}
+  details.prompt summary:before{content:"\25b8 ";color:var(--mut)} details.prompt[open] summary:before{content:"\25be "}
   details.prompt pre{margin:0;padding:0 16px 16px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;color:#c9d1e0;max-height:420px;overflow:auto}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:8px}
   .card{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;transition:.15s}
-  .card:hover{border-color:var(--acc);transform:translateY(-2px)} .card.dead{opacity:.72;cursor:default} .card.dead:hover{border-color:var(--bd);transform:none}
+  .card:hover{border-color:var(--acc);transform:translateY(-2px)} .card.decomp{border-color:rgba(183,148,246,.4)} .card.decomp:hover{border-color:var(--viol)}
   .card h2{font-size:16px;margin:0} .spec{color:var(--mut);font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-top:-8px}
   .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
   .stat .n{font-size:17px;font-weight:700;font-family:ui-monospace,Menlo,monospace}
@@ -30,8 +28,9 @@
   .pill{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:3px 10px}
   .pill.clean{background:rgba(126,231,135,.13);color:var(--grn);border:1px solid rgba(126,231,135,.3)}
   .pill.warn{background:rgba(240,198,116,.12);color:var(--amb);border:1px solid rgba(240,198,116,.32)}
-  .pill.fail{background:rgba(255,138,138,.12);color:var(--red);border:1px solid rgba(255,138,138,.32)}
-  .view{margin-top:auto;font-size:13px;color:var(--acc);font-weight:600} .view.dead{color:var(--mut)}
+  .pill.decomp{background:rgba(183,148,246,.14);color:var(--viol);border:1px solid rgba(183,148,246,.4)}
+  .view{margin-top:auto;font-size:13px;color:var(--acc);font-weight:600} .note-inline{display:block;color:var(--mut);font-weight:400;font-size:11.5px;margin-top:3px}
+  .note{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 20px;color:var(--mut);font-size:13.5px;margin:14px 0 0} .note.decomp{border-color:rgba(183,148,246,.35)} .note b{color:var(--tx)} .note code{background:var(--panel2);border-radius:4px;padding:1px 5px;font-size:12px}
   table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
   th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd)} th{color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
   td.mono,th.grp{font-family:ui-monospace,Menlo,monospace} .grp{border-left:2px solid var(--bd)}
@@ -41,7 +40,7 @@
 <div class="wrap">
   <div class="kicker">Astryx &times; Local LLMs</div>
   <h1>Can a local model build with Astryx?</h1>
-  <p class="lede">The same task given to four models running entirely on a laptop via LM Studio - twice. <b>Run 1</b> was a simple flower-shop page. <b>Run 2</b> was a demanding, production-grade 10-section marketing site with real imagery and a working light/dark theme toggle. Same build-gated harness both times; every linked page is unedited model output.</p>
+  <p class="lede">The same task given to four models running entirely on a laptop via LM Studio - twice. <b>Run 1</b> was a simple flower-shop page. <b>Run 2</b> was a demanding, production-grade 10-section marketing site with real imagery and a working light/dark theme toggle. Same build-gated harness; every linked page is unedited model output.</p>
   <p class="sub">Built with <code>@astryxdesign/core@0.3.0</code>. API discovered through the <code>@astryxdesign/cli</code>. Metrics from LM Studio's native API.</p>
 
   <div class="section-head"><h2>Run 1</h2><span class="tag">simple prompt &middot; header &middot; hero &middot; 6 cards &middot; about &middot; visit</span></div>
@@ -88,16 +87,16 @@ Requirements: real, specific copy throughout (no placeholders); unique picsum se
 <a class="card" href="./r2-nemotron-3-nano-omni/"><div><h2>NVIDIA Nemotron 3 Nano Omni</h2><div class="spec">30B-A3B MoE</div></div><span class="pill warn">&#10003; built &middot; 4 slips</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">57.7</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">10436</div><div class="l">tokens</div></div><div class="stat"><div class="n p">4</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
 <a class="card" href="./r2-qwen3.6-27b/"><div><h2>Qwen 3.6</h2><div class="spec">27B · 8-bit</div></div><span class="pill clean">&#10003; toggle + cart + newsletter</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">12.4</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">7014</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
 <a class="card" href="./r2-muse-glimmer/"><div><h2>Muse Glimmer</h2><div class="spec">28B · reasoning</div></div><span class="pill clean">&#10003; toggle + cart + newsletter</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">17.9</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">5982</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
-<div class="card dead"><div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div><span class="pill fail">&#10007; did not build (5 iters)</span><div class="stats"><div class="stat"><div class="n r">FAIL</div><div class="l">after 5 tries</div></div><div class="stat"><div class="n b">67.8</div><div class="l">tokens/sec</div></div></div><div class="view dead">could not hold the 10-section page together</div></div>
+<a class="card decomp" href="./r2-gemma-4-e4b/"><div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div><span class="pill decomp">&#9881; built via decomposition</span><div class="stats"><div class="stat"><div class="n g">10/10</div><div class="l">sections built</div></div><div class="stat"><div class="n b">85.4</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">9507</div><div class="l">tokens</div></div><div class="stat"><div class="n g">1</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr; <span class="note-inline">one-shot failed &middot; section-by-section works</span></div></a>
   </div>
+  <div class="note decomp"><b>&#9881; Gemma succeeds by a different route.</b> The 7.5B Gemma could not build the 10-section page in one shot - it failed all five repair rounds, its output collapsing under the weight of a ~500-line file. So it got the <b>same spec, a different method: task decomposition.</b> A fixed, correct App shell owns the imports and state wiring (theme toggle, cart, newsletter); Gemma then wrote each of the 10 sections as a small, independent function, each build-checked on its own. It nailed <b>all 10 sections on the first try</b> (0 retries, 1 rule slip). The lesson isn't that small models can't use Astryx - it's that <b>small models need the work broken down</b>. The larger models held the whole page in their head; Gemma needed it in pieces.</div>
 
   <h3>Run 1 vs Run 2 - per model</h3>
   <table><thead><tr><th>Model</th><th>Params</th><th class="grp">R1 result</th><th>R1 tok/s</th><th>R1 slips</th><th class="grp">R2 result</th><th>R2 tok/s</th><th>R2 slips</th></tr></thead><tbody>
 <tr><td>NVIDIA Nemotron 3 Nano Omni</td><td class="mono">30B-A3B MoE</td><td class="mono">&#10003; iter 1</td><td class="mono">69.4</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">57.7</td><td class="mono">4</td></tr>
 <tr><td>Qwen 3.6</td><td class="mono">27B</td><td class="mono">&#10003; iter 1</td><td class="mono">11.3</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">12.4</td><td class="mono">0</td></tr>
 <tr><td>Muse Glimmer</td><td class="mono">28B</td><td class="mono">&#10003; iter 1</td><td class="mono">16.6</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">17.9</td><td class="mono">0</td></tr>
-<tr><td>Google Gemma 4 e4b</td><td class="mono">7.5B</td><td class="mono">&#10003; iter 1</td><td class="mono">65.8</td><td class="mono">3</td><td class="mono grp">&#10007; failed (5)</td><td class="mono">67.8</td><td class="mono">&mdash;</td></tr>
+<tr><td>Google Gemma 4 e4b</td><td class="mono">7.5B</td><td class="mono">&#10003; iter 1</td><td class="mono">65.8</td><td class="mono">3</td><td class="mono grp">&#9881; decomposition</td><td class="mono">85.4</td><td class="mono">1</td></tr>
   </tbody></table>
-
-  <p class="foot">Unedited model output. App-level CSS imports (which belong in the entry file) were stripped before build, uniformly for all models. The build gate also rejects code that references a component it never imported (builds under the bundler but crashes at runtime). Part of a benchmark for the Astryx blog.</p>
+  <p class="foot" style="margin-top:12px">Run 2 results are one-shot generation except Gemma (&#9881;), which used task decomposition after one-shot failed - see note above. Unedited model output; app-level CSS imports were stripped uniformly before build. The build gate also rejects code that references a component it never imported (builds under the bundler but crashes at runtime). Part of a benchmark for the Astryx blog.</p>
 </div></body></html>
