@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run 2 — Production-grade Astryx pages from local LLMs</title>
+<style>
+  :root{--bg:#0d0f14;--panel:#161922;--panel2:#1d212d;--bd:#2a2f3d;--tx:#e8ebf0;--mut:#98a2b3;--acc:#8ab4ff;--grn:#7ee787;--amb:#f0c674;--pink:#ff9ecb;--red:#ff8a8a}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55}
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 96px}
+  .kicker{color:var(--acc);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  h1{font-size:32px;margin:0 0 12px;letter-spacing:-.02em;line-height:1.1}
+  .lede{color:var(--mut);font-size:17px;max-width:720px;margin:0 0 6px}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 32px} .sub code{background:var(--panel2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:12.5px}
+  .nav{margin:0 0 30px} .nav a{color:var(--acc);font-size:13.5px;text-decoration:none;border:1px solid var(--bd);border-radius:8px;padding:6px 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:40px}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;transition:.15s}
+  .card:hover{border-color:var(--acc);transform:translateY(-2px)} .card.dead{opacity:.72;cursor:default}
+  .card.dead:hover{border-color:var(--bd);transform:none}
+  .card h2{font-size:17px;margin:0} .spec{color:var(--mut);font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-top:-8px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .stat .n{font-size:18px;font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .stat .n.g{color:var(--grn)}.stat .n.a{color:var(--amb)}.stat .n.b{color:var(--acc)}.stat .n.p{color:var(--pink)}.stat .n.r{color:var(--red)}
+  .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+  .pill{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:3px 10px}
+  .pill.clean{background:rgba(126,231,135,.13);color:var(--grn);border:1px solid rgba(126,231,135,.3)}
+  .pill.fail{background:rgba(255,138,138,.12);color:var(--red);border:1px solid rgba(255,138,138,.32)}
+  .view{margin-top:auto;font-size:13px;color:var(--acc);font-weight:600}
+  .view.dead{color:var(--mut)}
+  .note{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 20px;color:var(--mut);font-size:13.5px;margin-bottom:34px}
+  .note b{color:var(--tx)} .note code{background:var(--panel2);border-radius:4px;padding:1px 5px;font-size:12px}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)} th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+  td.mono{font-family:ui-monospace,Menlo,monospace}
+  .foot{color:var(--mut);font-size:13px;margin-top:36px;border-top:1px solid var(--bd);padding-top:18px}
+  h3{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin:38px 0 6px}
+</style></head><body>
+<div class="wrap">
+  <div class="kicker">Astryx × Local LLMs · Run 2</div>
+  <h1>Production-grade pages, built by local models</h1>
+  <p class="lede">A far more demanding brief than <a href="../" style="color:var(--acc)">Run 1</a>: a full 10-section marketing site — app shell, hero, trust strip, product grid with real imagery, occasions, how-it-works, testimonials, a working newsletter input, and a <b>light/dark theme toggle</b> — all wired with real state. Same build-gated harness; every page below is unedited model output.</p>
+  <p class="sub">Each page has a working theme toggle, cart, and newsletter — try them. Built with <code>@astryxdesign/core@0.3.0</code>.</p>
+  <div class="nav"><a href="../">← Run 1 (simple prompt)</a></div>
+  <div class="grid">
+    <a class="card" href="./r2-nemotron-3-nano-omni/">
+      <div><h2>NVIDIA Nemotron 3 Nano Omni</h2><div class="spec">30B-A3B MoE · Q6_K</div></div>
+      <span class="pill clean">✓ built · toggle + cart + newsletter</span>
+      <div class="stats">
+        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
+        <div class="stat"><div class="n b">60.6</div><div class="l">tokens/sec</div></div>
+        <div class="stat"><div class="n a">18357</div><div class="l">tokens</div></div>
+        <div class="stat"><div class="n p">465</div><div class="l">lines of TSX</div></div>
+      </div>
+      <div class="view">Open the live site →</div>
+    </a>
+    <a class="card" href="./r2-qwen3.6-27b/">
+      <div><h2>Qwen 3.6</h2><div class="spec">27B · 8-bit</div></div>
+      <span class="pill clean">✓ built · toggle + cart + newsletter</span>
+      <div class="stats">
+        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
+        <div class="stat"><div class="n b">12.4</div><div class="l">tokens/sec</div></div>
+        <div class="stat"><div class="n a">7014</div><div class="l">tokens</div></div>
+        <div class="stat"><div class="n p">557</div><div class="l">lines of TSX</div></div>
+      </div>
+      <div class="view">Open the live site →</div>
+    </a>
+    <a class="card" href="./r2-muse-glimmer/">
+      <div><h2>Muse Glimmer</h2><div class="spec">28B · reasoning</div></div>
+      <span class="pill clean">✓ built · toggle + cart + newsletter</span>
+      <div class="stats">
+        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
+        <div class="stat"><div class="n b">17.9</div><div class="l">tokens/sec</div></div>
+        <div class="stat"><div class="n a">5982</div><div class="l">tokens</div></div>
+        <div class="stat"><div class="n p">259</div><div class="l">lines of TSX</div></div>
+      </div>
+      <div class="view">Open the live site →</div>
+    </a>
+    <div class="card dead">
+      <div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div>
+      <span class="pill fail">✗ did not build (5 iterations)</span>
+      <div class="stats">
+        <div class="stat"><div class="n r">FAIL</div><div class="l">after 5 tries</div></div>
+        <div class="stat"><div class="n b">58.2</div><div class="l">tokens/sec</div></div>
+      </div>
+      <div class="view dead">JSX syntax errors on the large page</div>
+    </div>
+  </div>
+  <div class="note">
+    <b>The production spec is where model size shows.</b> The three larger models (Nemotron, Qwen, Muse Glimmer) each built the full site — theme toggle and all — on the first attempt with zero rule violations. The 7.5B Gemma, which passed Run 1's simpler prompt, could not hold a 500-line page together: it produced malformed JSX (e.g. <code>isExternalLink?rel=...</code>) and never reached a clean build across five repair rounds.
+  </div>
+  <h3>Run 2 results</h3>
+  <table><thead><tr><th>Model</th><th>Params</th><th>Result</th><th>tok/s</th><th>Gen tokens</th><th>Toggle</th></tr></thead><tbody>
+      <tr><td>NVIDIA Nemotron 3 Nano Omni</td><td class="mono">30B-A3B</td><td class="mono">✓ built (iter 1)</td><td class="mono">60.6</td><td class="mono">18357</td><td>✓</td></tr>
+      <tr><td>Qwen 3.6</td><td class="mono">27B</td><td class="mono">✓ built (iter 1)</td><td class="mono">12.4</td><td class="mono">7014</td><td>✓</td></tr>
+      <tr><td>Muse Glimmer</td><td class="mono">28B</td><td class="mono">✓ built (iter 1)</td><td class="mono">17.9</td><td class="mono">5982</td><td>✓</td></tr>
+      <tr><td>Google Gemma 4 e4b</td><td class="mono">7.5B</td><td class="mono">✗ failed (5 iters)</td><td class="mono">58.2</td><td class="mono">346</td><td>—</td></tr>
+    </tbody></table>
+  <p class="foot">Unedited model output built with <code style="font-family:ui-monospace,monospace">@astryxdesign/core@0.3.0</code>. App-level CSS imports (which belong in the entry file) were stripped before build, uniformly for all models. Part of a benchmark for the Astryx blog.</p>
+</div></body></html>
