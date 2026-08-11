@@ -1,0 +1,46 @@
+{
+  "model": "qwen/qwen3.6-27b",
+  "slug": "qwen3.6-27b",
+  "reached_green": true,
+  "iterations_to_green": 1,
+  "total_iterations": 1,
+  "iterations": [
+    {
+      "iter": 1,
+      "wall_s": 583.03,
+      "usage": {
+        "prompt_tokens": 2645,
+        "completion_tokens": 7014,
+        "total_tokens": 9659,
+        "completion_tokens_details": {
+          "reasoning_tokens": 633
+        }
+      },
+      "stats": {
+        "tokens_per_second": 12.360676836563327,
+        "time_to_first_token": 15.416,
+        "generation_time": 567.444,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 27063,
+      "raw_content_chars": 27076,
+      "build_ok": true,
+      "build_s": 3.13,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 0,
+        "string_gap": 0,
+        "className": 0
+      },
+      "build_error_summary": ""
+    }
+  ],
+  "model_info": {
+    "arch": "qwen3_5",
+    "quant": "8bit",
+    "format": "safetensors",
+    "context_length": 131072
+  }
+}

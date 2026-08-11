@@ -1,0 +1,47 @@
+{
+  "model": "meta/muse-glimmer",
+  "slug": "muse-glimmer",
+  "reached_green": true,
+  "iterations_to_green": 1,
+  "total_iterations": 1,
+  "iterations": [
+    {
+      "iter": 1,
+      "wall_s": 346.7,
+      "usage": {
+        "prompt_tokens": 2595,
+        "completion_tokens": 5982,
+        "total_tokens": 8577,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2737
+        }
+      },
+      "stats": {
+        "tokens_per_second": 17.920032761486574,
+        "time_to_first_token": 11.997124,
+        "generation_time": 345.813478,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 13746,
+      "raw_content_chars": 13757,
+      "build_ok": true,
+      "build_s": 4.46,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 0,
+        "string_gap": 0,
+        "className": 0
+      },
+      "build_error_summary": "",
+      "css_imports_stripped": 0
+    }
+  ],
+  "model_info": {
+    "arch": "muse-glimmer",
+    "quant": "",
+    "format": "gguf",
+    "context_length": 32768
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "model": "google/gemma-4-e4b",
+  "slug": "gemma-4-e4b",
+  "reached_green": false,
+  "iterations_to_green": null,
+  "total_iterations": 5,
+  "iterations": [
+    {
+      "iter": 1,
+      "wall_s": 77.02,
+      "usage": {
+        "prompt_tokens": 2741,
+        "completion_tokens": 5366,
+        "total_tokens": 8107,
+        "completion_tokens_details": {
+          "reasoning_tokens": 338
+        }
+      },
+      "stats": {
+        "tokens_per_second": 69.7783438761571,
+        "time_to_first_token": 0.07805,
+        "generation_time": 76.9787,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 19942,
+      "raw_content_chars": 19953,
+      "build_ok": false,
+      "build_s": 1.09,
+      "rule_violations": {
+        "raw_div": 2,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 3,
+        "string_gap": 0,
+        "className": 15
+      },
+      "build_error_summary": "\u2717 Build failed in 38ms\nerror during build:\nBuild failed with 1 error:\n[builtin:vite-transform] Unexpected token\n\u256d\u2500[ src/App.tsx:319:64 ]",
+      "css_imports_stripped": 0
+    },
+    {
+      "iter": 2,
+      "wall_s": 88.34,
+      "usage": {
+        "prompt_tokens": 7865,
+        "completion_tokens": 5905,
+        "total_tokens": 13770,
+        "completion_tokens_details": {
+          "reasoning_tokens": 874
+        }
+      },
+      "stats": {
+        "tokens_per_second": 71.28468105362549,
+        "time_to_first_token": 5.442476,
+        "generation_time": 88.279348,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 19821,
+      "raw_content_chars": 19832,
+      "build_ok": false,
+      "build_s": 1.19,
+      "rule_violations": {
+        "raw_div": 1,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 3,
+        "string_gap": 0,
+        "className": 14
+      },
+      "build_error_summary": "\u2717 Build failed in 104ms\nerror during build:\nBuild failed with 1 error:\n[builtin:vite-transform] Unexpected token\n\u256d\u2500[ src/App.tsx:325:64 ]",
+      "css_imports_stripped": 0
+    },
+    {
+      "iter": 3,
+      "wall_s": 59.43,
+      "usage": {
+        "prompt_tokens": 12987,
+        "completion_tokens": 3397,
+        "total_tokens": 16384,
+        "completion_tokens_details": {
+          "reasoning_tokens": 562
+        }
+      },
+      "stats": {
+        "tokens_per_second": 65.71035182544887,
+        "time_to_first_token": 7.68258,
+        "generation_time": 59.379152999999995,
+        "stop_reason": "contextLengthReached"
+      },
+      "code_chars": 10914,
+      "raw_content_chars": 10914,
+      "build_ok": false,
+      "build_s": 0.62,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 0,
+        "string_gap": 0,
+        "className": 3
+      },
+      "build_error_summary": "\u2717 Build failed in 40ms\nerror during build:\nBuild failed with 1 error:\n[builtin:vite-transform] Expected a semicolon or an implicit semicolon after a statement, but found none\n\u256d\u2500[ src/App.tsx:60:29 ]",
+      "css_imports_stripped": 0
+    },
+    {
+      "iter": 4,
+      "wall_s": 11.28,
+      "usage": {
+        "prompt_tokens": 15923,
+        "completion_tokens": 461,
+        "total_tokens": 16384,
+        "completion_tokens_details": {
+          "reasoning_tokens": 451
+        }
+      },
+      "stats": {
+        "tokens_per_second": 68.4325632715456,
+        "time_to_first_token": 4.488783000000001,
+        "generation_time": 11.225342000000001,
+        "stop_reason": "contextLengthReached"
+      },
+      "code_chars": 0,
+      "raw_content_chars": 0,
+      "build_ok": false,
+      "build_s": 0.69,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 0,
+        "string_gap": 0,
+        "className": 0
+      },
+      "build_error_summary": "\u2717 Build failed in 64ms\nerror during build:\nBuild failed with 1 error:\n[MISSING_EXPORT] \"default\" is not exported by \"src/App.tsx\".",
+      "css_imports_stripped": 0
+    },
+    {
+      "iter": 5,
+      "wall_s": 5.71,
+      "usage": {
+        "prompt_tokens": 16014,
+        "completion_tokens": 370,
+        "total_tokens": 16384,
+        "completion_tokens_details": {
+          "reasoning_tokens": 143
+        }
+      },
+      "stats": {
+        "tokens_per_second": 67.78407803303064,
+        "time_to_first_token": 0.195381,
+        "generation_time": 5.6538900000000005,
+        "stop_reason": "contextLengthReached"
+      },
+      "code_chars": 758,
+      "raw_content_chars": 758,
+      "build_ok": false,
+      "build_s": 0.74,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 0,
+        "string_gap": 0,
+        "className": 0
+      },
+      "build_error_summary": "\u2717 Build failed in 43ms\nerror during build:\nBuild failed with 2 errors:\n\u256d\u2500[ src/App.tsx:1:3 ]\n[builtin:vite-transform] Expected a semicolon or an implicit semicolon after a statement, but found none",
+      "css_imports_stripped": 0
+    }
+  ],
+  "model_info": {
+    "arch": "gemma4",
+    "quant": "Q4_K_M",
+    "format": "gguf",
+    "context_length": 16384
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "model": "nvidia/nemotron-3-nano-omni",
+  "slug": "nemotron-3-nano-omni",
+  "reached_green": true,
+  "iterations_to_green": 1,
+  "total_iterations": 1,
+  "iterations": [
+    {
+      "iter": 1,
+      "wall_s": 183.21,
+      "usage": {
+        "prompt_tokens": 2770,
+        "completion_tokens": 10436,
+        "total_tokens": 13206,
+        "completion_tokens_details": {
+          "reasoning_tokens": 6385
+        }
+      },
+      "stats": {
+        "tokens_per_second": 57.722769166109586,
+        "time_to_first_token": 2.3510929999999997,
+        "generation_time": 183.1463,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 17132,
+      "raw_content_chars": 17221,
+      "build_ok": true,
+      "build_s": 2.51,
+      "rule_violations": {
+        "raw_div": 0,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 4,
+        "string_gap": 0,
+        "className": 0
+      },
+      "build_error_summary": "",
+      "css_imports_stripped": 2
+    }
+  ],
+  "model_info": {
+    "arch": "nemotron_h_moe",
+    "quant": "Q6_K",
+    "format": "gguf",
+    "context_length": 32768
+  }
+}
