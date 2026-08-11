@@ -1,0 +1,323 @@
+{
+  "model": "google/gemma-4-e4b",
+  "slug": "gemma-4-e4b",
+  "method": "decomposition",
+  "sections_total": 10,
+  "sections_built": 10,
+  "sections_fell_back": 0,
+  "final_build_ok": true,
+  "final_build_err": "",
+  "wall_total_s": 135.0,
+  "sections": [
+    {
+      "name": "HeroSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 92.1315993783489,
+          "gen": 738,
+          "viol": 0,
+          "err": "",
+          "wall": 8.99
+        }
+      ],
+      "code": "function HeroSection() {\n  return (\n    <Grid columns={{ minWidth: 340 }} gap={6}>\n      {/* Left Column Content */}\n      <VStack spacing={4}>\n        <Badge variant=\"info\" label=\"Fresh daily \u00b7 Locally grown\" />\n        <Heading level={1} type=\"display-1\">\n          Fresh flowers, hand-tied daily\n        </Heading>\n        <Text type=\"large\" color=\"secondary\">\n          Experience the freshest blooms delivered right to your door. Our local partnerships ensure that every bouquet is crafted with care and passion.\n        </Text>\n        <HStack gap={3}>\n          <Button label=\"Shop the collection\" variant=\"primary\" size=\"md\" />\n          <Button label=\"How it works\" variant=\"ghost\" size=\"md\" />\n        </HStack>\n      </VStack>\n\n      {/* Right Column Content */}\n      <Card padding={0}>\n        <AspectRatio ratio={4 / 3}>\n          <img src=\"https://picsum.photos/seed/petal-hero/800/600\" alt=\"A hand-tied seasonal bouquet\" style={imageFill} />\n        </AspectRatio>\n      </Card>\n    </Grid>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 92.1315993783489,
+        "time_to_first_token": 0.916753,
+        "generation_time": 8.927033999999999,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1077,
+        "completion_tokens": 738,
+        "total_tokens": 1815,
+        "completion_tokens_details": {
+          "reasoning_tokens": 448
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "TrustSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 90.97508299207391,
+          "gen": 1253,
+          "viol": 0,
+          "err": "",
+          "wall": 14.02
+        }
+      ],
+      "code": "function TrustSection() {\n  return (\n    <Grid columns={4} gap={4}>\n      {/* Same-day delivery */}\n      <VStack gap={1} hAlign=\"center\">\n        <Icon icon=\"clock\" size=\"md\" color=\"accent\" label=\"Same-day delivery\" />\n        <Text weight=\"semibold\">Same-Day Delivery</Text>\n        <Text type=\"supporting\" color=\"secondary\">Guaranteed fresh flowers delivered when you need them.</Text>\n      </VStack>\n\n      {/* 7-day freshness */}\n      <VStack gap={1} hAlign=\"center\">\n        <Icon icon=\"success\" size=\"md\" color=\"accent\" label=\"7-day freshness\" />\n        <Text weight=\"semibold\">7-Day Freshness</Text>\n        <Text type=\"supporting\" color=\"secondary\">We ensure your blooms stay vibrant and beautiful.</Text>\n      </VStack>\n\n      {/* Hand-tied by florists */}\n      <VStack gap={1} hAlign=\"center\">\n        <Icon icon=\"check\" size=\"md\" color=\"accent\" label=\"Hand-tied by florists\" />\n        <Text weight=\"semibold\">Hand-Tied Quality</Text>\n        <Text type=\"supporting\" color=\"secondary\">Every bouquet is crafted with care and expertise.</Text>\n      </VStack>\n\n      {/* Carbon-neutral shipping */}\n      <VStack gap={1} hAlign=\"center\">\n        <Icon icon=\"info\" size=\"md\" color=\"accent\" label=\"Carbon-neutral shipping\" />\n        <Text weight=\"semibold\">Eco-Friendly Shipping</Text>\n        <Text type=\"supporting\" color=\"secondary\">Making beautiful gestures without harming the planet.</Text>\n      </VStack>\n    </Grid>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 90.97508299207391,
+        "time_to_first_token": 0.212484,
+        "generation_time": 13.985486000000002,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1038,
+        "completion_tokens": 1253,
+        "total_tokens": 2291,
+        "completion_tokens_details": {
+          "reasoning_tokens": 824
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "FeaturedSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 89.12861114384953,
+          "gen": 1607,
+          "viol": 1,
+          "err": "",
+          "wall": 18.46
+        }
+      ],
+      "code": "function FeaturedSection({ addToCart }: { addToCart: () => void }) {\n  const bouquets = [\n    { name: \"Rose Radiance\", description: \"A timeless blend of deep red roses.\", seed: \"rose\", price: \"$48\", badges: ['success', 'Bestseller'], isNew: false },\n    { name: \"Peony Dream\", description: \"Soft, romantic peonies in full bloom.\", seed: \"peony\", price: \"$52\", badges: ['warning', 'Seasonal'], isNew: false },\n    { name: \"Tulip Sunrise\", description: \"Bright and cheerful mix of spring tulips.\", seed: \"tulip\", price: \"$45\", badges: ['info', 'New'], isNew: true },\n    { name: \"Sunflower Fields\", description: \"Vibrant yellows capturing summer sunshine.\", seed: \"sunflower\", price: \"$60\", badges: [], isNew: false },\n    { name: \"Orchid Elegance\", description: \"Exotic and sophisticated orchid varieties.\", seed: \"orchid\", price: \"$75\", badges: [], isNew: false },\n    { name: \"Wildflower Meadow\", description: \"A charming mix of delicate wildflowers.\", seed: \"wildflower\", price: \"$39\", badges: [], isNew: false },\n  ];\n\n  const renderCard = (bouquet: typeof bouquets[0]) => {\n    // Determine if the card should show Bestseller/Seasonal/New based on index (first three)\n    const getBadges = () => {\n      if (!bouquet.badges || bouquet.badges.length === 0) return null;\n\n      return (\n        <>\n          {bouquet.badges.map((badgeType, i) => (\n            <Badge key={i} variant={badgeType}>{badgeType}</Badge>\n          ))}\n        </>\n      );\n    };\n\n    return (\n      <Card padding={0}>\n        <AspectRatio ratio={1} shape=\"rectangle\">\n          <img src={`https://picsum.photos/seed/${bouquet.seed}/600/600`} alt={`${bouquet.name} bouquet`} style={imageFill} />\n        </AspectRatio>\n\n        <VStack padding={4} gap={2}>\n          <Heading level={3}>{bouquet.name}</Heading>\n          <Text type=\"supporting\" maxLines={2} color=\"secondary\">{bouquet.description}</Text>\n\n          <HStack justify=\"between\" vAlign=\"center\">\n            {/* Price */}\n            <Text weight=\"bold\">{bouquet.price}</Text>\n\n            {/* Badges and Button */}\n            <HStack gap={2}>\n              {getBadges()}\n              <Button label=\"Add to Cart\" variant=\"primary\" size=\"sm\" onClick={() => addToCart(bouquet)} />\n            </HStack>\n          </HStack>\n        </VStack>\n      </Card>\n    );\n  };\n\n  return (\n    <VStack gap={6}>\n      {/* Header */}\n      <VStack gap={2}>\n        <Heading level={2}>Featured bouquets</Heading>\n        <Text type=\"supporting\" color=\"secondary\">Hand-picked arrangements for every occasion.</Text>\n      </VStack>\n\n      {/* Grid */}\n      <Grid columns={{ minWidth: 300 }} gap={6}>\n        {bouquets.map((bouquet, index) => (\n          <div key={index}>{renderCard(bouquet)}</div>\n        ))}\n      </Grid>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 89.12861114384953,
+        "time_to_first_token": 0.367139,
+        "generation_time": 18.397264,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1177,
+        "completion_tokens": 1607,
+        "total_tokens": 2784,
+        "completion_tokens_details": {
+          "reasoning_tokens": 816
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "OccasionsSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 88.79548419254688,
+          "gen": 789,
+          "viol": 0,
+          "err": "",
+          "wall": 9.12
+        }
+      ],
+      "code": "function OccasionsSection() {\n  return (\n    <VStack gap={6}>\n      <Heading level={2}>Shop by occasion</Heading>\n      <Grid columns={{ minWidth: 240 }} gap={4}>\n        {/* Card 1: Pink - Birthday */}\n        <Card variant=\"pink\" padding={5}>\n          <VStack gap={1}>\n            <Heading level={3}>Birthday</Heading>\n            <Text type=\"supporting\">Celebrate life's brightest moments with a gift that shines.</Text>\n          </VStack>\n        </Card>\n\n        {/* Card 2: Purple - Anniversary */}\n        <Card variant=\"purple\" padding={5}>\n          <VStack gap={1}>\n            <Heading level={3}>Anniversary</Heading>\n            <Text type=\"supporting\">Marking another year together deserves something truly special.</Text>\n          </VStack>\n        </Card>\n\n        {/* Card 3: Orange - Sympathy */}\n        <Card variant=\"orange\" padding={5}>\n          <VStack gap={1}>\n            <Heading level={3}>Sympathy</Heading>\n            <Text type=\"supporting\">Offering comfort and remembrance during difficult times.</Text>\n          </VStack>\n        </Card>\n\n        {/* Card 4: Teal - Just Because */}\n        <Card variant=\"teal\" padding={5}>\n          <VStack gap={1}>\n            <Heading level={3}>Just Because</Heading>\n            <Text type=\"supporting\">Because some days just need a little unexpected joy.</Text>\n          </VStack>\n        </Card>\n      </Grid>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 88.79548419254688,
+        "time_to_first_token": 0.18879200000000002,
+        "generation_time": 9.074378999999999,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1020,
+        "completion_tokens": 789,
+        "total_tokens": 1809,
+        "completion_tokens_details": {
+          "reasoning_tokens": 402
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "HowItWorksSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 86.62394092700009,
+          "gen": 727,
+          "viol": 0,
+          "err": "",
+          "wall": 8.59
+        }
+      ],
+      "code": "function HowItWorksSection() {\n  return (\n    <VStack gap={6}>\n      <Heading level={2}>How it works</Heading>\n      <Grid columns={3} gap={6}>\n        {/* Step 1 */}\n        <VStack gap={2}>\n          <Heading level={3}>1. Choose</Heading>\n          <Text type=\"supporting\" color=\"secondary\">Select your desired design and materials from our curated collection.</Text>\n        </VStack>\n\n        {/* Step 2 */}\n        <VStack gap={2}>\n          <Heading level={3}>2. We hand-tie</Heading>\n          <Text type=\"supporting\" color=\"secondary\">Our expert artisans meticulously hand-tie each piece to ensure premium quality.</Text>\n        </VStack>\n\n        {/* Step 3 */}\n        <VStack gap={2}>\n          <Heading level={3}>3. Same-day delivery</Heading>\n          <Text type=\"supporting\" color=\"secondary\">Get your unique creation delivered right to your door in a single day.</Text>\n        </VStack>\n      </Grid>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 86.62394092700009,
+        "time_to_first_token": 0.15440299999999998,
+        "generation_time": 8.547002,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1012,
+        "completion_tokens": 727,
+        "total_tokens": 1739,
+        "completion_tokens_details": {
+          "reasoning_tokens": 457
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "TestimonialsSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 88.02040607802138,
+          "gen": 1057,
+          "viol": 0,
+          "err": "",
+          "wall": 12.49
+        }
+      ],
+      "code": "function TestimonialsSection() {\n  return (\n    <VStack gap={6}>\n      <Heading level={2}>Loved by locals</Heading>\n      <Grid columns={{ minWidth: 300 }} gap={6}>\n        {/* Testimonial Card 1 */}\n        <Card padding={5}>\n          <VStack gap={3}>\n            <Text type=\"body\">\"The quality exceeded my expectations. It's robust, beautifully designed, and has made a noticeable difference in our daily operations.\"</Text>\n            <VStack gap={0}>\n              <Heading level={4}>Sarah Chen</Heading>\n              <Text type=\"supporting\" color=\"secondary\">Marketing Director at Global Solutions</Text>\n            </VStack>\n          </VStack>\n        </Card>\n\n        {/* Testimonial Card 2 */}\n        <Card padding={5}>\n          <VStack gap={3}>\n            <Text type=\"body\">\"I was skeptical at first, but the ease of use and powerful features quickly won me over. Highly recommend this to anyone in the industry.\"</Text>\n            <VStack gap={0}>\n              <Heading level={4}>Michael Rodriguez</Heading>\n              <Text type=\"supporting\" color=\"secondary\">Freelance Consultant & Designer</Text>\n            </VStack>\n          </VStack>\n        </Card>\n\n        {/* Testimonial Card 3 */}\n        <Card padding={5}>\n          <VStack gap={3}>\n            <Text type=\"body\">\"Fantastic support and an incredibly reliable product. It seamlessly integrated with our existing stack, saving us countless hours.\"</Text>\n            <VStack gap={0}>\n              <Heading level={4}>Emily Carter</Heading>\n              <Text type=\"supporting\" color=\"secondary\">Product Manager at InnovateCo</Text>\n            </VStack>\n          </VStack>\n        </Card>\n      </Grid>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 88.02040607802138,
+        "time_to_first_token": 0.458991,
+        "generation_time": 12.46757,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1021,
+        "completion_tokens": 1057,
+        "total_tokens": 2078,
+        "completion_tokens_details": {
+          "reasoning_tokens": 602
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "NewsletterSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 88.78541053919818,
+          "gen": 528,
+          "viol": 0,
+          "err": "",
+          "wall": 6.21
+        }
+      ],
+      "code": "function NewsletterSection({ email, setEmail }: { email: string; setEmail: (v: string) => void }) {\n  return (\n    <Card variant=\"muted\" padding={8}>\n      <VStack gap={4} hAlign=\"center\">\n        <Heading level={2} justify=\"center\">Bloom with us</Heading>\n        <Text type=\"large\" color=\"secondary\" justify=\"center\">Stay updated on our latest designs and insights.</Text>\n        <HStack gap={2} wrap=\"wrap\" vAlign=\"end\">\n          <TextInput \n            label=\"Email\" \n            placeholder=\"you@example.com\" \n            value={email} \n            onChange={(e) => setEmail(e.target.value)} \n          />\n          <Button label=\"Subscribe\" variant=\"primary\" onClick={() => {}} />\n        </HStack>\n      </VStack>\n    </Card>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 88.78541053919818,
+        "time_to_first_token": 0.223829,
+        "generation_time": 6.170751999999999,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1062,
+        "completion_tokens": 528,
+        "total_tokens": 1590,
+        "completion_tokens_details": {
+          "reasoning_tokens": 312
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "AboutSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 89.87677136648787,
+          "gen": 498,
+          "viol": 0,
+          "err": "",
+          "wall": 5.73
+        }
+      ],
+      "code": "function AboutSection() {\n  return (\n    <VStack gap={4} maxWidth={760}>\n      <Heading level={2}>Our story</Heading>\n      <Text type=\"body\" color=\"secondary\">\n        Nestled in the heart of our community, [Studio Name] is more than just a flower studio\u2014it's a celebration of local life and natural beauty. We believe that the most vibrant bouquets come from the freshest sources, which is why we are deeply committed to sourcing over 90% of our blooms within a hundred-mile radius.\n      </Text>\n      <Text type=\"body\" color=\"secondary\">\n        Every single bouquet leaving our hands is treated as a piece of art. Our flowers aren't just arranged; they are hand-tied with care, reflecting the unique character and spirit of our local area. Experience the difference that true locality makes in every petal.\n      </Text>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 89.87677136648787,
+        "time_to_first_token": 0.161134,
+        "generation_time": 5.702054,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 978,
+        "completion_tokens": 498,
+        "total_tokens": 1476,
+        "completion_tokens_details": {
+          "reasoning_tokens": 280
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "VisitSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 78.71416311144598,
+          "gen": 1103,
+          "viol": 0,
+          "err": "",
+          "wall": 14.25
+        }
+      ],
+      "code": "function VisitSection() {\n  return (\n    <Card padding={6}>\n      <VStack gap={4}>\n        <Heading level={2}>Visit us</Heading>\n        <Grid columns={3} gap={4}>\n          {/* Address */}\n          <VStack gap={1}>\n            <Heading level={4}>Address</Heading>\n            <Text type=\"body\">123 Astryx Lane, Suite 500</Text>\n            <Text type=\"supporting\">City, State 90210</Text>\n          </VStack>\n\n          {/* Hours */}\n          <VStack gap={1}>\n            <Heading level={4}>Hours</Heading>\n            <Text type=\"body\">Mon - Fri: 9:00 AM - 5:00 PM</Text>\n            <Text type=\"supporting\">Sat: By Appointment</Text>\n          </VStack>\n\n          {/* Phone */}\n          <VStack gap={1}>\n            <Heading level={4}>Phone</Heading>\n            <Text type=\"body\">(555) 123-4567</Text>\n          </VStack>\n        </Grid>\n        <Link href=\"https://maps.google.com\" isExternalLink isStandalone>\n          Get directions\n        </Link>\n      </VStack>\n    </Card>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 78.71416311144598,
+        "time_to_first_token": 0.211947,
+        "generation_time": 14.224673000000001,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1028,
+        "completion_tokens": 1103,
+        "total_tokens": 2131,
+        "completion_tokens_details": {
+          "reasoning_tokens": 766
+        }
+      },
+      "fell_back": false
+    },
+    {
+      "name": "FooterSection",
+      "iters": [
+        {
+          "iter": 1,
+          "ok": true,
+          "tok_s": 60.51575568059693,
+          "gen": 1207,
+          "viol": 0,
+          "err": "",
+          "wall": 20.3
+        }
+      ],
+      "code": "function FooterSection() {\n  return (\n    <VStack gap={4}>\n      {/* Main content row: Logo/Tagline + 3 Columns */}\n      <HStack justify=\"between\" wrap=\"wrap\" gap={6}>\n        {/* Logo / Tagline Block */}\n        <VStack gap={1}>\n          <Heading level={3}>Petal & Stem</Heading>\n          <Text type=\"supporting\" color=\"secondary\">tagline</Text>\n        </VStack>\n\n        {/* Shop Column */}\n        <VStack gap={1}>\n          <Heading level={4}>Shop</Heading>\n          <Link href=\"#shop-item-1\">Product A</Link>\n          <Link href=\"#shop-item-2\">Collection B</Link>\n          <Link href=\"#shop-item-3\">Sale Items</Link>\n        </VStack>\n\n        {/* Company Column */}\n        <VStack gap={1}>\n          <Heading level={4}>Company</Heading>\n          <Link href=\"#about\">About Us</Link>\n          <Link href=\"#careers\">Careers</Link>\n          <Link href=\"#contact-us\">Contact</Link>\n        </VStack>\n\n        {/* Support Column */}\n        <VStack gap={1}>\n          <Heading level={4}>Support</Heading>\n          <Link href=\"#faq\">FAQ</Link>\n          <Link href=\"#shipping\">Shipping Info</Link>\n          <Link href=\"#returns\">Returns Policy</Link>\n        </VStack>\n      </HStack>\n\n      {/* Divider */}\n      <Divider variant=\"subtle\" />\n\n      {/* Copyright Text */}\n      <Text type=\"supporting\" color=\"secondary\">\u00a9 2026 Petal & Stem. All rights reserved.</Text>\n    </VStack>\n  );\n}",
+      "final_iter": 1,
+      "stats": {
+        "tokens_per_second": 60.51575568059693,
+        "time_to_first_token": 0.205426,
+        "generation_time": 20.150645,
+        "stop_reason": "eosFound"
+      },
+      "usage": {
+        "prompt_tokens": 1040,
+        "completion_tokens": 1207,
+        "total_tokens": 2247,
+        "completion_tokens_details": {
+          "reasoning_tokens": 781
+        }
+      },
+      "fell_back": false
+    }
+  ]
+}
