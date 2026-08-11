@@ -1,0 +1,43 @@
+{
+  "model": "google/gemma-4-e4b",
+  "slug": "gemma-4-e4b",
+  "reached_green": true,
+  "iterations_to_green": 1,
+  "total_iterations": 1,
+  "iterations": [
+    {
+      "iter": 1,
+      "wall_s": 41.31,
+      "usage": {
+        "prompt_tokens": 1895,
+        "completion_tokens": 2561,
+        "total_tokens": 4456
+      },
+      "stats": {
+        "tokens_per_second": 65.7578660825266,
+        "time_to_first_token": 2.315,
+        "generation_time": 38.922,
+        "stop_reason": "eosFound"
+      },
+      "code_chars": 8020,
+      "raw_content_chars": 8031,
+      "build_ok": true,
+      "build_s": 1.9,
+      "rule_violations": {
+        "raw_div": 1,
+        "raw_span": 0,
+        "raw_p_tag": 0,
+        "inline_style": 1,
+        "string_gap": 0,
+        "className": 1
+      },
+      "build_error_summary": ""
+    }
+  ],
+  "model_info": {
+    "arch": "gemma4",
+    "quant": "Q4_K_M",
+    "format": "gguf",
+    "context_length": 16384
+  }
+}

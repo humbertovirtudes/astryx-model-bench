@@ -1,0 +1,11 @@
+Build a landing page for a flower shop called "Petal & Stem" as src/App.tsx.
+
+Sections:
+1. A header row (HStack) with the shop name (Heading) on the left and a cart indicator on the right: a Button labeled like "Cart (N)" whose N comes from useState and increments when any "Add to Cart" is clicked.
+2. A hero: a centered Heading (use type="display-1" or level={1}), a warm one-line tagline (Text type="large"), and a primary Button "Shop Now".
+3. Featured bouquets: a Grid (responsive, columns={{minWidth: 280}}) of 6 bouquet Cards. Use floral color variants (pink, green, yellow, purple, etc). Each card: bouquet name (Heading level={3}), a one-line description (Text type="supporting"), a price (Text weight="bold"), a Badge on some ("Bestseller" -> success, "Seasonal" -> warning), and an "Add to Cart" Button (size="sm", primary) wired to increment the cart.
+4. About: a Heading and two short Text paragraphs about fresh, locally-sourced flowers.
+5. Visit Us: a Card with address, hours, phone (each a Heading level={4} label + Text lines), and a standalone Link "Get Directions".
+6. Footer: shop name (Heading) and a small tagline (Text type="supporting").
+
+Use real bouquet names (Rose, Peony, Tulip, Sunflower, Orchid, Wildflower, etc). Constrain the page to a centered column around maxWidth 1100 using VStack + centering. Generous gaps between sections (gap={8} or {10}). Make it inviting and production-quality — but obey every Astryx rule (no div, no inline styles, spacing-scale numbers only).

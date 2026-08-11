@@ -1,0 +1,76 @@
+You are an expert frontend engineer building a page with Astryx, an open-source React + StyleX design system (@astryxdesign/core). You are writing a single React component file: src/App.tsx. Output valid TypeScript + JSX.
+
+This API reference was produced by the Astryx CLI (`npx @astryxdesign/cli build "<idea>"` and `npx @astryxdesign/cli component <Name>`) — the same tool a human uses. Follow it exactly.
+
+## SETUP (already done in main.tsx — do NOT add these; just know the CSS is loaded)
+import "@astryxdesign/core/reset.css";
+import "@astryxdesign/core/astryx.css";
+
+## THEME (wrap the whole app once)
+import {Theme} from '@astryxdesign/core/theme';
+import {neutralTheme} from '@astryxdesign/theme-neutral/built';
+// <Theme theme={neutralTheme}> ...everything... </Theme>
+
+## IMPORTS (use these exact paths)
+import {VStack, HStack} from '@astryxdesign/core/Layout';
+import {Grid} from '@astryxdesign/core/Grid';
+import {Card} from '@astryxdesign/core/Card';
+import {Heading, Text} from '@astryxdesign/core/Text';
+import {Button} from '@astryxdesign/core/Button';
+import {Badge} from '@astryxdesign/core/Badge';
+import {Divider} from '@astryxdesign/core/Divider';
+import {Link} from '@astryxdesign/core/Link';
+import {useState} from 'react';
+
+## CORE RULES (from the CLI's agent guidance)
+- NO <div>, no <span>, no <p>, no <h1>. Components do ALL layout and spacing. Use VStack/HStack/Grid for layout, Heading/Text for type.
+- NO inline style={{}} and NO className with raw CSS. NO raw hex colors or px values in styles.
+- For spacing use the gap/padding scale — a NUMBER from this set only: 0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 8, 10. Write gap={4} (a JSX number), never gap="4".
+- Color/emphasis comes from component props (Card variant, Text color, Badge variant), not custom CSS.
+- Center a page column with VStack maxWidth={1100} plus an outer HStack justify="center" (or VStack hAlign="center").
+
+## COMPONENT API (exact props)
+
+VStack / HStack (from /Layout) — fl<ex layout:
+  gap, padding, paddingInline, paddingBlock: one of 0|0.5|1|1.5|2|3|4|5|6|8|10 (JSX number)
+  hAlign: 'start'|'center'|'end'|'stretch'    vAlign/justify: 'start'|'center'|'end'|'between'|'around'|'evenly'
+  wrap: 'nowrap'|'wrap'|'wrap-reverse'    width/maxWidth/minHeight: number(px) or string
+  children. (VStack = column, HStack = row.)
+
+Grid (from /Grid) — multi-column:
+  columns: a NUMBER (fixed, e.g. columns={3}) OR an object {minWidth: 280, max?: number, repeat?: 'fill'|'fit'} for responsive.
+  gap/rowGap/columnGap: spacing-scale number.  align/justify: 'start'|'center'|'end'|'stretch'. children.
+
+Card (from /Card):
+  variant: 'default'|'transparent'|'muted'|'blue'|'cyan'|'gray'|'green'|'orange'|'pink'|'purple'|'red'|'teal'|'yellow' (default 'default')
+  padding: spacing-scale number (default 4).  width/maxWidth/minHeight. children.
+  (Color variants set a themed pastel background — use them for the floral look, e.g. variant="pink" / "green" / "yellow".)
+
+Heading (from /Text):
+  level: 1|2|3|4|5|6 (REQUIRED).  type?: 'display-1'|'display-2'|'display-3' (big hero type).
+  color?: 'primary'|'secondary'|'accent'.  justify?: 'start'|'center'|'end'.  children (REQUIRED).
+
+Text (from /Text):
+  type: 'body'|'large'|'label'|'supporting'|'code' (default 'body'). NOTE: it's `type`, not `variant`.
+  color?: 'primary'|'secondary'|'accent'.  weight?: 'normal'|'medium'|'semibold'|'bold'.  justify?: 'start'|'center'|'end'. children (REQUIRED).
+
+Button (from /Button):
+  label: string (REQUIRED — the visible text).  variant: 'primary'|'secondary'|'ghost'|'destructive' (default 'secondary').
+  size: 'sm'|'md'|'lg' (default 'md').  onClick?: (e)=>void.  width?: number|string.  icon?, isDisableddO?, isLoading?.
+  Do NOT put text as children — use the label prop.
+
+Badge (from /Badge):
+  variant: 'neutral'|'info'|'success'|'warning'|'error'|'blue'|'cyan'|'green'|'orange'|'pink'|'purple'|'red'|'teal'|'yellow' (default 'neutral').
+  label: the text/number.  (Badge is for status/category, e.g. "Bestseller", "Seasonal".)
+
+Divider (from /Divider): orientation 'horizontal'|'vertical'; variant 'subtle'|'strong'; label?.
+
+Link (from /Link): href; children (REQUIRED — the visible text); isExternalLink?; isStandalone? (set true for standalone links outside body text).
+
+## OUTPUT
+Output ONLY the contents of src/App.tsx inside a single ```tsx code fence. It must:
+- import what it uses (from the exact paths above),
+- export a default function App(),
+- wrap everything in <Theme theme={neutralTheme}>,
+- use useState for the cart counter.
+No commentary before or after the code fence.

@@ -1,84 +1,64 @@
-# Astryx Model Benchmark
+# Astryx Model Benchmark — Local LLMs build with Astryx
 
-Compare local models on their ability to build React pages using Meta's Astryx design system.
+Can a model running **entirely on a laptop** build a real page with [Astryx](https://github.com/facebook/astryx), using the same CLI a person would?
 
-## Results Summary
+We gave four local models (via [LM Studio](https://lmstudio.ai/)) the **same prompt** — build a "Petal & Stem" flower shop landing page — and put each through a build-gated iteration loop. The API reference in the prompt was produced by the public `@astryxdesign/cli`, exactly how an agent is meant to discover Astryx.
 
-| Model | Task 1: Login | Task 2: Dashboard | Task 3: Settings | Task 4: Chat | Avg |
-|-------|:---:|:---:|:---:|:---:|:---:|
-| **Gemma-4-e4b** (4B) | 18/40 | 14/40 | ❌ Context overflow | 21/40 | **17.7/40** |
-| **Qwen-3.6-27b** (27B) | 35/40 | ❌ Timeout | ❌ Timeout | ❌ Timeout | **35/40** |
+## 🌸 Live pages
 
-## Key Finding
+Every page is the model's **own output, unedited**, built with `@astryxdesign/core@0.3.0` and deployed to GitHub Pages.
 
-Qwen is **2x better** on code quality but **20x slower** on LMStudio. Gemma is fast but hallucinates MUI components and ignores "no inline styles" instructions.
+| Model | Live page |
+| --- | --- |
+| Qwen 3.6 (27B) | https://humbertovirtudes.github.io/astryx-model-bench/qwen3.6-27b/ |
+| Nemotron 3 Nano Omni (30B MoE) | https://humbertovirtudes.github.io/astryx-model-bench/nemotron-3-nano-omni/ |
+| Gemma 4 e4b (7.5B) | https://humbertovirtudes.github.io/astryx-model-bench/gemma-4-e4b/ |
+| **Index** | https://humbertovirtudes.github.io/astryx-model-bench/ |
 
-## Live Sites
+## Results
 
-All 4 sites built and running on Vite dev servers:
+| Model | Params | Quant | Green build | Speed | TTFT | Gen tokens | Astryx conventions |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Nemotron 3 Nano Omni | 30B (3B active, MoE) | Q6_K | ✅ 1st try | 69.4 tok/s | 2.47s | 7691 | clean (0 violations) |
+| Gemma 4 e4b | 7.5B | Q4_K_M | ✅ 1st try | 65.8 tok/s | 2.315s | 2561 | 3 slips (raw div wrapper) |
+| Qwen 3.6 | 27B | 8-bit | ✅ 1st try | 11.3 tok/s | 8.456s | 2694 | clean (0 violations) |
+| Muse Glimmer | 28B | Q6_K | ❌ did not load | — | — | — | — |
 
-| Site | Port | Model | Task |
-|------|------|-------|------|
-| [Gemma Login](http://localhost:5001) | 5001 | Gemma-4-e4b | Task 1 |
-| [Qwen Login](http://localhost:5002) | 5002 | Qwen-3.6-27b | Task 1 |
-| [Gemma Dashboard](http://localhost:5003) | 5003 | Gemma-4-e4b | Task 2 |
-| [Gemma Chat](http://localhost:5004) | 5004 | Gemma-4-e4b | Task 4 |
+**Three of four models built the page on the first attempt** — no fix-up rounds needed.
 
-## Models
+### Key findings
 
-| Model | Type | Why |
-|-------|------|-----|
-| `google/gemma-4-e4b` | Small generalist | Baseline — can a 4B model follow Astryx docs? |
-| `qwen/qwen3.6-27b` | Coding-focused | Primary comparison — 27B coding model |
-| `nvidia/nemotron-3-nano-omni` | Research/analysis | Future — reasoning-heavy model |
+- **A 7.5B model built a working Astryx page on the first try.** The CLI-derived prompt did its job — no model that ran hallucinated a component badly enough to break the build.
+- **Clean build ≠ clean code.** Qwen and Nemotron produced pure Astryx (layout via `VStack`/`HStack`/`Grid`, spacing via the numeric scale). Gemma built a working page but reached for a raw `<div style={...}>` to center the column — the "wrapper div" escape hatch.
+- **MoE is fast.** Nemotron (30B weights, ~3B active) ran fastest at 69.4 tok/s while Qwen (dense 27B) was slowest at 11.3 tok/s — roughly 6× the difference.
+- **Context length is a silent failure.** Gemma first failed every round at its default 4096-token context (output truncated mid-file). Reloaded at 16384, it passed first try.
+- **A model can be too new to run.** Muse Glimmer's `muse-glimmer` architecture isn't recognized by the current llama.cpp runtime (LM Studio 2.13.0) or Ollama 0.32.7 — it fails to load. The bottleneck is the runtime, not the model.
 
-## Evaluation Criteria
+## Method
 
-1. **Component Discovery** — Does the model find and import the correct Astryx components?
-2. **CLI Performance** — Does the model use `astryx` CLI commands correctly?
-3. **Mobile Responsiveness** — Does the output render correctly on mobile viewports?
-4. **Web Standards** — Semantic HTML, a11y attributes, proper TypeScript, valid imports
-
-## Tasks
-
-Each task is a self-contained prompt asking the model to produce a single-page React app using Astryx.
-
-### Task 1: Login Page
-Simple auth form — tests FormLayout, TextInput, Button, Card, Field components.
-
-### Task 2: Dashboard
-Data display — tests Table, Card, Grid, Badge, TopNav, AppShell.
-
-### Task 3: Settings Panel
-Configuration UI — tests Toggle, Switch, Select, TabList, SideNav, Dialog.
-
-### Task 4: Chat Interface
-Conversational UI — tests Chat, Message, Avatar, Button, TextArea, Layout.
+- **Same prompt for every model** — see [`prompts/system.txt`](prompts/system.txt) and [`prompts/user.txt`](prompts/user.txt). The Astryx API reference in the system prompt was generated by `npx @astryxdesign/cli build` + `npx @astryxdesign/cli component <Name>`.
+- **Build-gated iteration loop** — generate `App.tsx` → `vite build` → on failure, feed the error back and retry (up to 5 rounds). See [`harness.py`](harness.py).
+- **Metrics** from LM Studio's native `/api/v0` endpoint (tokens/sec, time-to-first-token, quant, context). Rule violations (raw `<div>`, inline `style`, `className`) counted separately from the build gate.
+- Every model loaded at **16384 context** for fairness.
 
 ## Structure
 
 ```
-astryx-model-bench/
-├── prompts/           # Benchmark prompts for each task
-├── results/           # Raw model outputs + comparison report
-│   ├── gemma/
-│   ├── qwen/
-│   └── comparison.md
-├── sites/             # Built Vite+React+Astryx projects
-│   ├── gemma-login/
-│   ├── qwen-login/
-│   ├── gemma-dashboard/
-│   └── gemma-chat/
-├── scripts/           # Runner scripts
-├── eval-criteria.md   # Scoring rubric
-└── README.md
+prompts/       the exact system + user prompt sent to every model
+results/       per-model result.json (iterations, timings, violations)
+sites/         each model's generated App.tsx + a runnable vite app
+harness.py     the generate → build → repair loop
 ```
 
-## Run Locally
+## The models
 
-```bash
-cd sites/gemma-login && npm run dev -- --port 5001
-cd sites/qwen-login && npm run dev -- --port 5002
-cd sites/gemma-dashboard && npm run dev -- --port 5003
-cd sites/gemma-chat && npm run dev -- --port 5004
-```
+| Model | LM Studio ID | Notes |
+| --- | --- | --- |
+| Gemma 4 e4b | `google/gemma-4-e4b` | Smallest — can a 7.5B model follow Astryx docs? |
+| Qwen 3.6 | `qwen/qwen3.6-27b` | Dense 27B coding model |
+| Nemotron 3 Nano Omni | `nvidia/nemotron-3-nano-omni` | 30B MoE (~3B active) |
+| Muse Glimmer | `meta/muse-glimmer` | 28B — architecture unsupported by current runtimes |
+
+---
+
+Built for the [Astryx blog](https://astryx.atmeta.com/blog). Generated code is unedited model output.
