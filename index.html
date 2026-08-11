@@ -1,106 +1,103 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Local LLMs build with Astryx — Model Benchmark</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local LLMs build with Astryx - Two-Run Benchmark</title>
 <style>
-  :root{--bg:#0d0f14;--panel:#161922;--panel2:#1d212d;--bd:#2a2f3d;--tx:#e8ebf0;--mut:#98a2b3;--acc:#8ab4ff;--grn:#7ee787;--amb:#f0c674;--pink:#ff9ecb;--purple:#b39ddb}
+  :root{--bg:#0d0f14;--panel:#161922;--panel2:#1d212d;--bd:#2a2f3d;--tx:#e8ebf0;--mut:#98a2b3;--acc:#8ab4ff;--grn:#7ee787;--amb:#f0c674;--pink:#ff9ecb;--red:#ff8a8a}
   *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.55}
-  .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 96px}
+  .wrap{max-width:1040px;margin:0 auto;padding:56px 24px 96px}
   .kicker{color:var(--acc);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
   h1{font-size:34px;margin:0 0 12px;letter-spacing:-.02em;line-height:1.1}
-  .lede{color:var(--mut);font-size:17px;max-width:680px;margin:0 0 8px}
-  .sub{color:var(--mut);font-size:14px;margin:0 0 36px} .sub code{background:var(--panel2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:12.5px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:44px}
-  .card{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
-  .card:hover{border-color:var(--acc);transform:translateY(-2px)}
-  .card h2{font-size:17px;margin:0} .spec{color:var(--mut);font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-top:-8px}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:2px}
-  .stat .n{font-size:18px;font-weight:700;font-family:ui-monospace,Menlo,monospace}
-  .stat .n.g{color:var(--grn)}.stat .n.a{color:var(--amb)}.stat .n.b{color:var(--acc)}.stat .n.p{color:var(--pink)}
+  .lede{color:var(--mut);font-size:17px;max-width:760px;margin:0 0 8px}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 40px} .sub code{background:var(--panel2);border:1px solid var(--bd);border-radius:5px;padding:1px 6px;font-size:12.5px}
+  .section-head{display:flex;align-items:baseline;gap:12px;margin:46px 0 6px;padding-top:10px;border-top:1px solid var(--bd)}
+  .section-head h2{font-size:22px;margin:0;letter-spacing:-.01em}
+  .section-head .tag{font-size:12px;color:var(--mut);font-family:ui-monospace,Menlo,monospace}
+  .section-sub{color:var(--mut);font-size:14.5px;margin:0 0 16px;max-width:780px}
+  details.prompt{background:var(--panel);border:1px solid var(--bd);border-radius:10px;margin:0 0 22px}
+  details.prompt summary{cursor:pointer;padding:12px 16px;font-size:13px;font-weight:600;color:var(--acc);user-select:none;list-style:none}
+  details.prompt summary::-webkit-details-marker{display:none}
+  details.prompt summary:before{content:"\25b8 ";color:var(--mut)}
+  details.prompt[open] summary:before{content:"\25be "}
+  details.prompt pre{margin:0;padding:0 16px 16px;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.6;color:#c9d1e0;max-height:420px;overflow:auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:8px}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;text-decoration:none;color:inherit;transition:.15s}
+  .card:hover{border-color:var(--acc);transform:translateY(-2px)} .card.dead{opacity:.72;cursor:default} .card.dead:hover{border-color:var(--bd);transform:none}
+  .card h2{font-size:16px;margin:0} .spec{color:var(--mut);font-size:12px;font-family:ui-monospace,Menlo,monospace;margin-top:-8px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .stat .n{font-size:17px;font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .stat .n.g{color:var(--grn)}.stat .n.a{color:var(--amb)}.stat .n.b{color:var(--acc)}.stat .n.p{color:var(--pink)}.stat .n.r{color:var(--red)}
   .stat .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
   .pill{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:3px 10px}
   .pill.clean{background:rgba(126,231,135,.13);color:var(--grn);border:1px solid rgba(126,231,135,.3)}
-  .pill.warn{background:rgba(240,198,116,.12);color:var(--amb);border:1px solid rgba(240,198,116,.3)}
-  .view{margin-top:auto;font-size:13px;color:var(--acc);font-weight:600}
-  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd)} th{color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
-  td.mono{font-family:ui-monospace,Menlo,monospace}
-  .note{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 20px;color:var(--mut);font-size:13.5px;margin-bottom:36px}
-  .note b{color:var(--tx)} .note code{background:var(--panel2);border-radius:4px;padding:1px 5px;font-size:12px}
+  .pill.warn{background:rgba(240,198,116,.12);color:var(--amb);border:1px solid rgba(240,198,116,.32)}
+  .pill.fail{background:rgba(255,138,138,.12);color:var(--red);border:1px solid rgba(255,138,138,.32)}
+  .view{margin-top:auto;font-size:13px;color:var(--acc);font-weight:600} .view.dead{color:var(--mut)}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--bd)} th{color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em}
+  td.mono,th.grp{font-family:ui-monospace,Menlo,monospace} .grp{border-left:2px solid var(--bd)}
+  h3{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin:44px 0 6px}
   .foot{color:var(--mut);font-size:13px;margin-top:40px;border-top:1px solid var(--bd);padding-top:20px}
-  h3{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin:40px 0 6px}
-</style>
-</head>
-<body>
-<div style="max-width:1000px;margin:0 auto;padding:16px 24px 0"><a href="./run2/" style="display:block;background:rgba(138,180,255,.1);border:1px solid rgba(138,180,255,.35);border-radius:10px;padding:12px 16px;color:#8ab4ff;text-decoration:none;font-size:14px;font-weight:600">✨ New: Run 2 — production-grade pages with a light/dark theme toggle →</a></div>
+</style></head><body>
 <div class="wrap">
-  <div class="kicker">Astryx × Local LLMs</div>
+  <div class="kicker">Astryx &times; Local LLMs</div>
   <h1>Can a local model build with Astryx?</h1>
-  <p class="lede">The same prompt — "build a Petal &amp; Stem flower shop" — given to four models running entirely on a laptop via LM Studio. Each wrote a real <code>App.tsx</code> against the Astryx component API discovered through the <code>@astryxdesign/cli</code>, gated by a Vite build.</p>
-  <p class="sub">Same system prompt · same task · <code>vite build</code> must pass · metrics from LM Studio's native API. Click any card to open the live page that model built.</p>
+  <p class="lede">The same task given to four models running entirely on a laptop via LM Studio - twice. <b>Run 1</b> was a simple flower-shop page. <b>Run 2</b> was a demanding, production-grade 10-section marketing site with real imagery and a working light/dark theme toggle. Same build-gated harness both times; every linked page is unedited model output.</p>
+  <p class="sub">Built with <code>@astryxdesign/core@0.3.0</code>. API discovered through the <code>@astryxdesign/cli</code>. Metrics from LM Studio's native API.</p>
+
+  <div class="section-head"><h2>Run 1</h2><span class="tag">simple prompt &middot; header &middot; hero &middot; 6 cards &middot; about &middot; visit</span></div>
+  <p class="section-sub">A single-viewport flower shop. The floor: can the model find the right components and build something that renders?</p>
+  <details class="prompt"><summary>Exact prompt sent (Run 1)</summary><pre>Build a landing page for a flower shop called &quot;Petal &amp; Stem&quot; as src/App.tsx.
+
+Sections:
+1. A header row (HStack) with the shop name (Heading) on the left and a cart indicator on the right: a Button labeled like &quot;Cart (N)&quot; whose N comes from useState and increments when any &quot;Add to Cart&quot; is clicked.
+2. A hero: a centered Heading (use type=&quot;display-1&quot; or level={1}), a warm one-line tagline (Text type=&quot;large&quot;), and a primary Button &quot;Shop Now&quot;.
+3. Featured bouquets: a Grid (responsive, columns={{minWidth: 280}}) of 6 bouquet Cards. Use floral color variants (pink, green, yellow, purple, etc). Each card: bouquet name (Heading level={3}), a one-line description (Text type=&quot;supporting&quot;), a price (Text weight=&quot;bold&quot;), a Badge on some (&quot;Bestseller&quot; -&gt; success, &quot;Seasonal&quot; -&gt; warning), and an &quot;Add to Cart&quot; Button (size=&quot;sm&quot;, primary) wired to increment the cart.
+4. About: a Heading and two short Text paragraphs about fresh, locally-sourced flowers.
+5. Visit Us: a Card with address, hours, phone (each a Heading level={4} label + Text lines), and a standalone Link &quot;Get Directions&quot;.
+6. Footer: shop name (Heading) and a small tagline (Text type=&quot;supporting&quot;).
+
+Use real bouquet names (Rose, Peony, Tulip, Sunflower, Orchid, Wildflower, etc). Constrain the page to a centered column around maxWidth 1100 using VStack + centering. Generous gaps between sections (gap={8} or {10}). Make it inviting and production-quality — but obey every Astryx rule (no div, no inline styles, spacing-scale numbers only).</pre></details>
   <div class="grid">
-    <a class="card" href="./nemotron-3-nano-omni/">
-      <div><h2>NVIDIA Nemotron 3 Nano Omni</h2><div class="spec">30B-A3B MoE · Q6_K</div></div>
-      <span class="pill clean">0 rule violations</span>
-      <div class="stats">
-        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
-        <div class="stat"><div class="n b">69.4</div><div class="l">tokens/sec</div></div>
-        <div class="stat"><div class="n a">2.47s</div><div class="l">time to 1st token</div></div>
-        <div class="stat"><div class="n p">7691</div><div class="l">tokens generated</div></div>
-      </div>
-      <div class="view">View the page it built →</div>
-    </a>
-    <a class="card" href="./qwen3.6-27b/">
-      <div><h2>Qwen 3.6</h2><div class="spec">27B · 8-bit</div></div>
-      <span class="pill clean">0 rule violations</span>
-      <div class="stats">
-        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
-        <div class="stat"><div class="n b">11.3</div><div class="l">tokens/sec</div></div>
-        <div class="stat"><div class="n a">8.456s</div><div class="l">time to 1st token</div></div>
-        <div class="stat"><div class="n p">2694</div><div class="l">tokens generated</div></div>
-      </div>
-      <div class="view">View the page it built →</div>
-    </a>
-    <a class="card" href="./muse-glimmer/">
-      <div><h2>Muse Glimmer</h2><div class="spec">28B · reasoning</div></div>
-      <span class="pill clean">0 rule violations</span>
-      <div class="stats">
-        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
-        <div class="stat"><div class="n b">16.6</div><div class="l">tokens/sec</div></div>
-        <div class="stat"><div class="n a">8.151389s</div><div class="l">time to 1st token</div></div>
-        <div class="stat"><div class="n p">3683</div><div class="l">tokens generated</div></div>
-      </div>
-      <div class="view">View the page it built →</div>
-    </a>
-    <a class="card" href="./gemma-4-e4b/">
-      <div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div>
-      <span class="pill warn">3 rule violations</span>
-      <div class="stats">
-        <div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div>
-        <div class="stat"><div class="n b">65.8</div><div class="l">tokens/sec</div></div>
-        <div class="stat"><div class="n a">2.315s</div><div class="l">time to 1st token</div></div>
-        <div class="stat"><div class="n p">2561</div><div class="l">tokens generated</div></div>
-      </div>
-      <div class="view">View the page it built →</div>
-    </a>
+<a class="card" href="./nemotron-3-nano-omni/"><div><h2>NVIDIA Nemotron 3 Nano Omni</h2><div class="spec">30B-A3B MoE</div></div><span class="pill clean">&#10003; built &middot; cart</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">69.4</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">7691</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 1 page &rarr;</div></a>
+<a class="card" href="./qwen3.6-27b/"><div><h2>Qwen 3.6</h2><div class="spec">27B · 8-bit</div></div><span class="pill clean">&#10003; built &middot; cart</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">11.3</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">2694</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 1 page &rarr;</div></a>
+<a class="card" href="./muse-glimmer/"><div><h2>Muse Glimmer</h2><div class="spec">28B · reasoning</div></div><span class="pill clean">&#10003; built &middot; cart</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">16.6</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">3683</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 1 page &rarr;</div></a>
+<a class="card" href="./gemma-4-e4b/"><div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div><span class="pill warn">&#10003; built &middot; 3 slips</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">65.8</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">2561</div><div class="l">tokens</div></div><div class="stat"><div class="n p">3</div><div class="l">rule slips</div></div></div><div class="view">Open Run 1 page &rarr;</div></a>
   </div>
 
-  <div class="note">
-    <b>All four models built the page on the first attempt.</b> Muse Glimmer initially couldn't load at all — LM Studio's llama.cpp runtime didn't recognize its architecture — until a runtime update (2.13.0 → 2.28.2) added support. It's a reasoning model, so it thinks before writing code (answer in <code>content</code>, reasoning in <code>reasoning_content</code>).
+  <div class="section-head"><h2>Run 2</h2><span class="tag">production spec &middot; 10 sections &middot; imagery &middot; theme toggle &middot; newsletter</span></div>
+  <p class="section-sub">A real launch site: app shell, hero, trust strip, product grid with photos, occasions, how-it-works, testimonials, a controlled newsletter input, and a working light/dark toggle - all wired with state. This is where model size and stamina show.</p>
+  <details class="prompt"><summary>Exact prompt sent (Run 2)</summary><pre>Build a complete, production-ready marketing website for a boutique flower shop, &quot;Petal &amp; Stem,&quot; as a single src/App.tsx. This is a real launch site — every section fully built, real copy, working interactions, light/dark support. Take visual cues from Astryx&#x27;s Product Gallery template (real imagery, app shell, generous whitespace, strong hierarchy).
+
+Global chrome:
+- App shell via &lt;Layout height=&quot;fill&quot; contentWidth={1200}&gt;. LayoutHeader top bar: brand &quot;Petal &amp; Stem&quot; (Heading) on the left; on the right a nav row of ghost Buttons (Shop, Occasions, About, Contact), a light/dark theme toggle, and a &quot;Cart (N)&quot; Button whose count comes from useState and increments on every Add to Cart. Main content in LayoutContent padding={6}. Site wrapped in &lt;Theme theme={neutralTheme} mode={mode}&gt;.
+
+Sections, in order:
+1. HERO — two-column Grid (columns={{minWidth: 340}}). Left: an eyebrow Badge (&quot;Fresh daily · Locally grown&quot;), a large Heading (type=&quot;display-1&quot;), a compelling paragraph (Text type=&quot;large&quot;), and two Buttons — primary &quot;Shop the collection&quot; with a trailing arrow Icon, and a ghost &quot;How it works&quot;. Right: a hero image (Card padding={0} + AspectRatio ratio={4/3} + picsum image, seed &quot;petal-hero&quot;).
+2. TRUST STRIP — a row (Grid columns={4} or HStack, wrap) of 3-4 small stats or reassurances with Icons: e.g. &quot;Same-day delivery&quot;, &quot;7-day freshness guarantee&quot;, &quot;Hand-tied by florists&quot;, &quot;Carbon-neutral shipping&quot;.
+3. FEATURED BOUQUETS — section Heading + supporting Text, then a Grid (columns={{minWidth: 300}}, gap={6}) of 6 bouquet cards. Each: image (Card padding={0} + AspectRatio ratio={1} + unique-seed picsum), name (Heading level={3}), a 2-line description (Text maxLines={2}, color secondary), a price (Text weight=&quot;bold&quot;), a category/status Badge on some (Bestseller→success, Seasonal→warning, New→info), and an &quot;Add to Cart&quot; Button (size sm, primary) wired to the cart. Vary the six with real names (Rose, Peony, Tulip, Sunflower, Orchid, Wildflower...).
+4. OCCASIONS — a Grid of 3-4 clickable-feeling category Cards (Birthday, Anniversary, Sympathy, Just Because), each with an image or color variant, a Heading, and a short line of Text.
+5. HOW IT WORKS — 3 steps (Grid or HStack), each a numbered/icon step with a Heading and Text: choose → we hand-tie → same-day delivery.
+6. TESTIMONIALS — 2-3 customer quote Cards (Text for the quote, a Heading/Text for the name + role), tastefully laid out.
+7. NEWSLETTER — a muted Card band with a Heading, a line of Text, a controlled TextInput for email (state), and a primary &quot;Subscribe&quot; Button. Show it&#x27;s interactive.
+8. ABOUT — Heading + two paragraphs of real brand story about fresh, locally-sourced flowers and the studio&#x27;s craft.
+9. VISIT US — a Card with Address, Hours, Phone (each Heading level={4} + Text lines) and a standalone external Link &quot;Get Directions&quot;.
+10. FOOTER — via LayoutFooter or a footer band: brand Heading, a tagline (Text supporting), columns of Links (Shop / Company / Support), and a small copyright line.
+
+Requirements: real, specific copy throughout (no placeholders); unique picsum seeds so images load; the cart, newsletter input, and theme toggle all genuinely work via useState; light and dark both look right (tokens only). Aim for something you&#x27;d be proud to ship to a real florist. Obey every Astryx rule (no raw layout divs, no inline styles except the one image-fill const, spacing-scale numbers only).</pre></details>
+  <div class="grid">
+<a class="card" href="./r2-nemotron-3-nano-omni/"><div><h2>NVIDIA Nemotron 3 Nano Omni</h2><div class="spec">30B-A3B MoE</div></div><span class="pill warn">&#10003; built &middot; 4 slips</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">57.7</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">10436</div><div class="l">tokens</div></div><div class="stat"><div class="n p">4</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
+<a class="card" href="./r2-qwen3.6-27b/"><div><h2>Qwen 3.6</h2><div class="spec">27B · 8-bit</div></div><span class="pill clean">&#10003; toggle + cart + newsletter</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">12.4</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">7014</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
+<a class="card" href="./r2-muse-glimmer/"><div><h2>Muse Glimmer</h2><div class="spec">28B · reasoning</div></div><span class="pill clean">&#10003; toggle + cart + newsletter</span><div class="stats"><div class="stat"><div class="n g">iter 1</div><div class="l">to green</div></div><div class="stat"><div class="n b">17.9</div><div class="l">tokens/sec</div></div><div class="stat"><div class="n a">5982</div><div class="l">tokens</div></div><div class="stat"><div class="n g">0</div><div class="l">rule slips</div></div></div><div class="view">Open Run 2 site &rarr;</div></a>
+<div class="card dead"><div><h2>Google Gemma 4 e4b</h2><div class="spec">7.5B · Q4_K_M</div></div><span class="pill fail">&#10007; did not build (5 iters)</span><div class="stats"><div class="stat"><div class="n r">FAIL</div><div class="l">after 5 tries</div></div><div class="stat"><div class="n b">67.8</div><div class="l">tokens/sec</div></div></div><div class="view dead">could not hold the 10-section page together</div></div>
   </div>
 
-  <h3>Results at a glance</h3>
-  <table>
-    <thead><tr><th>Model</th><th>Params</th><th>Green</th><th>tok/s</th><th>TTFT</th><th>Gen tokens</th><th>Astryx purity</th></tr></thead>
-    <tbody>
-      <tr><td>NVIDIA Nemotron 3 Nano Omni</td><td class="mono">30B-A3B</td><td class="mono">iter 1</td><td class="mono">69.4</td><td class="mono">2.47s</td><td class="mono">7691</td><td>✓ pure</td></tr>
-      <tr><td>Qwen 3.6</td><td class="mono">27B</td><td class="mono">iter 1</td><td class="mono">11.3</td><td class="mono">8.456s</td><td class="mono">2694</td><td>✓ pure</td></tr>
-      <tr><td>Muse Glimmer</td><td class="mono">28B</td><td class="mono">iter 1</td><td class="mono">16.6</td><td class="mono">8.151389s</td><td class="mono">3683</td><td>✓ pure</td></tr>
-      <tr><td>Google Gemma 4 e4b</td><td class="mono">7.5B</td><td class="mono">iter 1</td><td class="mono">65.8</td><td class="mono">2.315s</td><td class="mono">2561</td><td>⚠ 3 (raw_div, inline_style, className)</td></tr>
-    </tbody>
-  </table>
-  <p class="foot">Every page above is the model's own output, built with <code style="font-family:ui-monospace,monospace">@astryxdesign/core@0.3.0</code> and deployed as a static Vite bundle. No human edits to the generated code. Part of a benchmark for the Astryx blog.</p>
-</div>
-</body>
-</html>
+  <h3>Run 1 vs Run 2 - per model</h3>
+  <table><thead><tr><th>Model</th><th>Params</th><th class="grp">R1 result</th><th>R1 tok/s</th><th>R1 slips</th><th class="grp">R2 result</th><th>R2 tok/s</th><th>R2 slips</th></tr></thead><tbody>
+<tr><td>NVIDIA Nemotron 3 Nano Omni</td><td class="mono">30B-A3B MoE</td><td class="mono">&#10003; iter 1</td><td class="mono">69.4</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">57.7</td><td class="mono">4</td></tr>
+<tr><td>Qwen 3.6</td><td class="mono">27B</td><td class="mono">&#10003; iter 1</td><td class="mono">11.3</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">12.4</td><td class="mono">0</td></tr>
+<tr><td>Muse Glimmer</td><td class="mono">28B</td><td class="mono">&#10003; iter 1</td><td class="mono">16.6</td><td class="mono">0</td><td class="mono grp">&#10003; iter 1</td><td class="mono">17.9</td><td class="mono">0</td></tr>
+<tr><td>Google Gemma 4 e4b</td><td class="mono">7.5B</td><td class="mono">&#10003; iter 1</td><td class="mono">65.8</td><td class="mono">3</td><td class="mono grp">&#10007; failed (5)</td><td class="mono">67.8</td><td class="mono">&mdash;</td></tr>
+  </tbody></table>
+
+  <p class="foot">Unedited model output. App-level CSS imports (which belong in the entry file) were stripped before build, uniformly for all models. The build gate also rejects code that references a component it never imported (builds under the bundler but crashes at runtime). Part of a benchmark for the Astryx blog.</p>
+</div></body></html>
