@@ -10,29 +10,30 @@ Every page is the model's **own output, unedited**, built with `@astryxdesign/co
 
 | Model | Live page |
 | --- | --- |
-| Qwen 3.6 (27B) | https://humbertovirtudes.github.io/astryx-model-bench/qwen3.6-27b/ |
 | Nemotron 3 Nano Omni (30B MoE) | https://humbertovirtudes.github.io/astryx-model-bench/nemotron-3-nano-omni/ |
+| Qwen 3.6 (27B) | https://humbertovirtudes.github.io/astryx-model-bench/qwen3.6-27b/ |
+| Muse Glimmer (28B, reasoning) | https://humbertovirtudes.github.io/astryx-model-bench/muse-glimmer/ |
 | Gemma 4 e4b (7.5B) | https://humbertovirtudes.github.io/astryx-model-bench/gemma-4-e4b/ |
 | **Index** | https://humbertovirtudes.github.io/astryx-model-bench/ |
 
 ## Results
 
+**All four models built the page on the first attempt** — no fix-up rounds needed.
+
 | Model | Params | Quant | Green build | Speed | TTFT | Gen tokens | Astryx conventions |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Nemotron 3 Nano Omni | 30B (3B active, MoE) | Q6_K | ✅ 1st try | 69.4 tok/s | 2.47s | 7691 | clean (0 violations) |
 | Gemma 4 e4b | 7.5B | Q4_K_M | ✅ 1st try | 65.8 tok/s | 2.315s | 2561 | 3 slips (raw div wrapper) |
+| Muse Glimmer | 28B (reasoning) | K-quant | ✅ 1st try | 16.6 tok/s | 8.151389s | 3683 | clean (0 violations) |
 | Qwen 3.6 | 27B | 8-bit | ✅ 1st try | 11.3 tok/s | 8.456s | 2694 | clean (0 violations) |
-| Muse Glimmer | 28B | Q6_K | ❌ did not load | — | — | — | — |
-
-**Three of four models built the page on the first attempt** — no fix-up rounds needed.
 
 ### Key findings
 
-- **A 7.5B model built a working Astryx page on the first try.** The CLI-derived prompt did its job — no model that ran hallucinated a component badly enough to break the build.
-- **Clean build ≠ clean code.** Qwen and Nemotron produced pure Astryx (layout via `VStack`/`HStack`/`Grid`, spacing via the numeric scale). Gemma built a working page but reached for a raw `<div style={...}>` to center the column — the "wrapper div" escape hatch.
-- **MoE is fast.** Nemotron (30B weights, ~3B active) ran fastest at 69.4 tok/s while Qwen (dense 27B) was slowest at 11.3 tok/s — roughly 6× the difference.
+- **A 7.5B model built a working Astryx page on the first try.** The CLI-derived prompt did its job — no model hallucinated a component badly enough to break the build.
+- **Clean build ≠ clean code.** Three of four produced pure Astryx (layout via `VStack`/`HStack`/`Grid`, spacing via the numeric scale). Gemma built a working page but reached for a raw `<div style={...}>` to center the column — the "wrapper div" escape hatch.
+- **MoE is fast.** Nemotron (30B weights, ~3B active) ran fastest at 69.4 tok/s; Qwen (dense 27B) was slowest at 11.3 tok/s.
 - **Context length is a silent failure.** Gemma first failed every round at its default 4096-token context (output truncated mid-file). Reloaded at 16384, it passed first try.
-- **A model can be too new to run.** Muse Glimmer's `muse-glimmer` architecture isn't recognized by the current llama.cpp runtime (LM Studio 2.13.0) or Ollama 0.32.7 — it fails to load. The bottleneck is the runtime, not the model.
+- **A model can be too new to run — until the runtime catches up.** Muse Glimmer's `muse-glimmer` architecture was unrecognized by LM Studio's llama.cpp runtime 2.13.0 and failed to load. A runtime update to **2.28.2** added support, after which it built the page on the first try. It's a reasoning model — it thinks in a separate `reasoning_content` channel before writing code.
 
 ## Method
 
@@ -57,7 +58,7 @@ harness.py     the generate → build → repair loop
 | Gemma 4 e4b | `google/gemma-4-e4b` | Smallest — can a 7.5B model follow Astryx docs? |
 | Qwen 3.6 | `qwen/qwen3.6-27b` | Dense 27B coding model |
 | Nemotron 3 Nano Omni | `nvidia/nemotron-3-nano-omni` | 30B MoE (~3B active) |
-| Muse Glimmer | `meta/muse-glimmer` | 28B — architecture unsupported by current runtimes |
+| Muse Glimmer | `meta/muse-glimmer` | 28B reasoning model; needs llama.cpp ≥ 2.28.2 |
 
 ---
 
