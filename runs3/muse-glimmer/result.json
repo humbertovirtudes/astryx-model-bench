@@ -1,0 +1,77 @@
+{
+  "model": "meta/muse-glimmer",
+  "slug": "muse-glimmer",
+  "method": "vision-in-the-loop",
+  "rounds": [
+    {
+      "round": 0,
+      "build_ok": true,
+      "code_chars": 13880,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 7652,
+      "tok_s": null,
+      "wall": 364.6,
+      "desktop_png_bytes": 1624167,
+      "mobile_png_bytes": 1641770
+    },
+    {
+      "round": 1,
+      "build_ok": true,
+      "code_chars": 13626,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5532,
+      "tok_s": null,
+      "wall": 301.1,
+      "desktop_png_bytes": 1591422,
+      "mobile_png_bytes": 1730332
+    },
+    {
+      "round": 2,
+      "build_ok": true,
+      "code_chars": 13356,
+      "violations": 1,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 1,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5429,
+      "tok_s": null,
+      "wall": 298.6,
+      "desktop_png_bytes": 1544863,
+      "mobile_png_bytes": 1608484
+    },
+    {
+      "round": 3,
+      "build_ok": true,
+      "code_chars": 12990,
+      "violations": 3,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 3,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5314,
+      "tok_s": null,
+      "wall": 311.1,
+      "desktop_png_bytes": 1515754,
+      "mobile_png_bytes": 1686549
+    }
+  ],
+  "final_ok": true,
+  "total_rounds": 4
+}

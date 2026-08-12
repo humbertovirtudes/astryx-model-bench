@@ -1,0 +1,77 @@
+{
+  "model": "qwen/qwen3.6-27b",
+  "slug": "qwen3.6-27b",
+  "method": "vision-in-the-loop",
+  "rounds": [
+    {
+      "round": 0,
+      "build_ok": true,
+      "code_chars": 19574,
+      "violations": -3,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": -3,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5163,
+      "tok_s": null,
+      "wall": 382.4,
+      "desktop_png_bytes": 1815369,
+      "mobile_png_bytes": 1934555
+    },
+    {
+      "round": 1,
+      "build_ok": true,
+      "code_chars": 18051,
+      "violations": -3,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": -3,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5121,
+      "tok_s": null,
+      "wall": 388.7,
+      "desktop_png_bytes": 1465687,
+      "mobile_png_bytes": 1774828
+    },
+    {
+      "round": 2,
+      "build_ok": true,
+      "code_chars": 17636,
+      "violations": -3,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": -3,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 4995,
+      "tok_s": null,
+      "wall": 347.3,
+      "desktop_png_bytes": 1283851,
+      "mobile_png_bytes": 1851741
+    },
+    {
+      "round": 3,
+      "build_ok": true,
+      "code_chars": 21455,
+      "violations": -4,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": -4,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5589,
+      "tok_s": null,
+      "wall": 377.1,
+      "desktop_png_bytes": 2029477,
+      "mobile_png_bytes": 1805707
+    }
+  ],
+  "final_ok": true,
+  "total_rounds": 4
+}

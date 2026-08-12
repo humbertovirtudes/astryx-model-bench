@@ -1,0 +1,77 @@
+{
+  "model": "nvidia/nemotron-3-nano-omni",
+  "slug": "nemotron-3-nano-omni",
+  "method": "vision-in-the-loop",
+  "rounds": [
+    {
+      "round": 0,
+      "build_ok": true,
+      "code_chars": 16305,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 8750,
+      "tok_s": null,
+      "wall": 114.6,
+      "desktop_png_bytes": 1361886,
+      "mobile_png_bytes": 1245417
+    },
+    {
+      "round": 1,
+      "build_ok": true,
+      "code_chars": 9384,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5543,
+      "tok_s": null,
+      "wall": 72.1,
+      "desktop_png_bytes": 5290,
+      "mobile_png_bytes": 3315
+    },
+    {
+      "round": 2,
+      "build_ok": true,
+      "code_chars": 4991,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 5564,
+      "tok_s": null,
+      "wall": 74.7,
+      "desktop_png_bytes": 881472,
+      "mobile_png_bytes": 553103
+    },
+    {
+      "round": 3,
+      "build_ok": true,
+      "code_chars": 4382,
+      "violations": 0,
+      "rv": {
+        "raw_div": 0,
+        "inline_style": 0,
+        "className": 0,
+        "string_gap": 0
+      },
+      "gen_tokens": 4512,
+      "tok_s": null,
+      "wall": 57.7,
+      "desktop_png_bytes": 1346787,
+      "mobile_png_bytes": 1446263
+    }
+  ],
+  "final_ok": true,
+  "total_rounds": 4
+}
